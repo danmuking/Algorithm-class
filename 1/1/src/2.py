@@ -14,6 +14,13 @@ import string
 
 
 def getInOUt(path):
+    '''
+    :desc: 用于读取测试数据
+    :author: 林逸
+    :param path: 测试数据所在文件路径
+    :return: inner 测试数据中的输入
+             outer 测试数据中的结果
+    '''
     inners = []
     inPath = osp.join(path,"TEST")
     inFilePaths = os.listdir(inPath)
@@ -25,7 +32,7 @@ def getInOUt(path):
                 temp[j] = temp[j].strip()
             inners.append(temp)
 
-    print(inners)
+    # print(inners)
 
     outers = []
     outPath = osp.join(path, "ANSWER")
@@ -38,10 +45,16 @@ def getInOUt(path):
                 temp[j] = int(temp[j].strip())
             outers.append(temp)
 
-    print(outers)
+    # print(outers)
     return inners,outers
 
 def countBefore(m,n):
+    '''
+    :desc:计算组合数
+    :param m: 组合数的上标
+    :param n: 组合数的下标
+    :return: 返回组合数的值
+    '''
     temp1 = 1
     temp2 = 1
     for i in range(1,m+1):
@@ -51,10 +64,17 @@ def countBefore(m,n):
     return int(temp2/temp1)
 
 def dictionary(inner):
+    '''
+    :author: 林逸
+    :desc: 太复杂了，这里说不清，写在思路里了
+    :param inner: 输入的测试数据
+    :return: 字典序的值
+    '''
     out = []
+    # 因为python可以直接readlines，所以不需要知道有几个输入
     eachNums = inner[1:]
     for eachNum in eachNums:
-        # eachNum = "ahou"
+        # eachNum = "acde"
         # print(eachNum)
         sum = 0
         for i in range(1,len(eachNum)):
@@ -82,15 +102,32 @@ def dictionary(inner):
     return out
 
 def checkResult(out,outer):
+    '''
+    :desc: 检查结果是否正确
+    :param out: 程序计算的值
+    :param outer: 测试文件中的结果值
+    :return: True or FALSE
+    '''
     if(out == outer):
         return True
     else:
         return False
 
+def writeResult(result):
+    '''
+    将结果写入out.txt文件中
+    arg：
+        result 包含所有结果的列表
+    '''
+    with open("out.txt",'w') as f:
+        for each in result:
+            f.write(str(each)+"\n")
+
 
 
 if __name__ == '__main__':
     path = r"G:\Code\Algorithm class\1\1\DICTIONARY"
+    result = []
     inners,outers = getInOUt(path)
     for i in range(len(inners)):
         startTime = datetime.datetime.now()
@@ -99,6 +136,7 @@ if __name__ == '__main__':
         out = dictionary(inner)
         endTime = datetime.datetime.now()
 
+        print("1810716319 林逸")
         print("程序输入：", inner)
         print("程序输出：", out)
         print("正确输出：", outer)
@@ -109,3 +147,4 @@ if __name__ == '__main__':
             print("错误")
         print("运行时间：", endTime - startTime)
         print('-' * 30)
+    writeResult(result)
