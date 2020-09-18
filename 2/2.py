@@ -63,45 +63,43 @@ def miniFunc(arr,left,right):
         while arr[start]<=arr[mark] and start<end:
             start = start+1
         arr[start],arr[end] = arr[end],arr[start]
-    # if(arr[mark]>arr[start]):
     arr[mark],arr[end]=arr[end],arr[mark]
     return end
-    # else:
-    #     return mark
 
-# def quickSort(arr, left=None, right=None):
-#     left = 0 if not isinstance(left,(int, float)) else left
-#     right = len(arr)-1 if not isinstance(right,(int, float)) else right
-#     if left < right:
-#         partitionIndex = partition(arr, left, right)
-#         quickSort(arr, left, partitionIndex-1)
-#         quickSort(arr, partitionIndex+1, right)
-#     return arr
-#
-# def partition(arr, left, right):
-#     pivot = left
-#     index = pivot+1
-#     i = index
-#     while  i <= right:
-#         if arr[i] < arr[pivot]:
-#             swap(arr, i, index)
-#             index+=1
-#         i+=1
-#     swap(arr,pivot,index-1)
-#     return index-1
-#
-# def swap(arr, i, j):
-#     arr[i], arr[j] = arr[j], arr[i]
+
+def heap(arr,n,i):
+    largest = i
+    l = 2*i+1
+    r = 2*i+2
+    if l < n and arr[i] < arr[l]:
+        largest = l
+    if r < n and arr[largest] < arr[r]:
+        largest = r
+    if largest != i:
+        arr[i], arr[largest] = arr[largest], arr[i]
+        heap(arr,n,largest)
+
+def heapSort(arr):
+    n = len(arr)
+    for i in range(n,-1,-1):
+        heap(arr,n,i)
+
+    for i in range(n-1,0,-1):
+        arr[i],arr[0] = arr[0],arr[i]
+        heap(arr,i,0)
+    return arr
 
 
 
 if __name__ == '__main__':
-    # numOfNum = [10,100,1000,100000]
-    numOfNum = [10000]
-    mode = 'quick'
+    numOfNum = [10,100,1000,100000]
+    # numOfNum = [10]
+    mode = 'heap'
     print("排序算法:"+mode)
     for each in numOfNum:
         num = generateNum(each)
+        checkList = num.copy()
+        checkList.sort()
         # num = [-74, -32, 7, -7, 8, 15, 23, 58, 87, 96]
         start = time.time()
         if(mode == 'bubble'):
@@ -112,8 +110,11 @@ if __name__ == '__main__':
             result = insertionSort(num)
         elif(mode == "quick"):
             result = quickSort(num,0,len(num)-1)
-            # result = quickSort(num)
+        elif(mode == "heap"):
+            result = heapSort(num)
         end = time.time()
-        print("程序输入：",num)
-        print("程序输出：",result)
+        if(result==checkList):
+            print("right")
+        # print("程序输入：",num)
+        # print("程序输出：",result)
         print("运行时间：",end-start,"s")
