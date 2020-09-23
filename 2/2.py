@@ -23,6 +23,11 @@ def bubbleSort(arr):
     return arr
 
 def selectionnSort(arr):
+    '''
+    选择排序
+    @param arr: 需要排序的数字列表
+    @return: 排序完成的数字列表
+    '''
     for i in tqdm(range(len(arr))):
         minIndex = i
         for j in range(i,len(arr)):
@@ -32,8 +37,13 @@ def selectionnSort(arr):
     return arr
 
 def insertionSort(arr):
+    '''
+    选择排序
+    @param arr: 需要排序的数字列表
+    @return: 排序完成的数字列表
+    '''
     emptyList = [arr[0]]
-    for i in tqdm(range(1,len(arr))):
+    for i in range(1,len(arr)):
         if (arr[i] <= emptyList[0]):
             emptyList.insert(0, arr[i])
         elif (arr[i] >= emptyList[-1]):
@@ -46,15 +56,30 @@ def insertionSort(arr):
     return emptyList
 
 def quickSort(arr,left,right):
+    """
+    快速排序
+    @param arr: 需要排序的数组
+    @param left: 排序的起始位置
+    @param right: 排序的结束位置
+    @return: 排好序的数组
+    """
     if(left<right):
         markIndex = miniFunc(arr,left,right)
+        # 使用递归进行分治，将Mark值的左右分别排序
         quickSort(arr,left,markIndex-1)
         quickSort(arr,markIndex+1,right)
     return arr
 
 def miniFunc(arr,left,right):
+    """
+    将数组大于mark的值移到makr左边，小于mark的值移到mark右边
+    @param arr: 需要排序的数组
+    @param left: 排序的起始位置
+    @param right: 排序的结束位置
+    @return: mark的位置
+    """
     mark = left
-    start = mark+1
+    start = mark
     end = right
     while start<end:
         # 注意一下等于的条件
@@ -62,14 +87,23 @@ def miniFunc(arr,left,right):
             end = end-1
         while arr[start]<=arr[mark] and start<end:
             start = start+1
+
         arr[start],arr[end] = arr[end],arr[start]
     arr[mark],arr[end]=arr[end],arr[mark]
     return end
 
 
 def heap(arr,n,i):
+    """
+    构造大根堆
+    @param arr: 需要排序的数组
+    @param n: 需要排序数的个数
+    @param i: 当前所在非叶节点位置
+    """
     largest = i
+    #叶节点的左节点
     l = 2*i+1
+    #叶节点的右节点
     r = 2*i+2
     if l < n and arr[i] < arr[l]:
         largest = l
@@ -80,8 +114,15 @@ def heap(arr,n,i):
         heap(arr,n,largest)
 
 def heapSort(arr):
+    """
+    堆排序
+    @param arr: 需要排序的数组
+    @return: 完成排序的数组
+    """
     n = len(arr)
+    #从最后一个非叶节点开始
     for i in range(n,-1,-1):
+        #构造大根堆
         heap(arr,n,i)
 
     for i in range(n-1,0,-1):
@@ -92,15 +133,14 @@ def heapSort(arr):
 
 
 if __name__ == '__main__':
-    numOfNum = [10,100,1000,100000]
-    # numOfNum = [10]
-    mode = 'heap'
+    numOfNum = [5,100,1000,100000]
+    mode = 'bubble'
     print("排序算法:"+mode)
     for each in numOfNum:
         num = generateNum(each)
+        # num = [-6, 47, 7]
         checkList = num.copy()
         checkList.sort()
-        # num = [-74, -32, 7, -7, 8, 15, 23, 58, 87, 96]
         start = time.time()
         if(mode == 'bubble'):
             result = bubbleSort(num)
@@ -114,7 +154,5 @@ if __name__ == '__main__':
             result = heapSort(num)
         end = time.time()
         if(result==checkList):
-            print("right")
-        # print("程序输入：",num)
-        # print("程序输出：",result)
+            print("列表长度为{},排序正确".format(len(num)))
         print("运行时间：",end-start,"s")
